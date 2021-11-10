@@ -1,0 +1,7 @@
+# Feed me Mensa UL   
+
+```
+docker image build -t feed-me-mensa-ul:latest . 
+docker container run --env-file ./.env feed-me-mensa-ul:latest
+```
+
