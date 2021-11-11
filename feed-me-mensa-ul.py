@@ -1,54 +1,96 @@
-from typing import overload
 import requests
 import bs4
-import random
 import emoji
-import os
+from bs4 import  Tag
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHANNEL_ID = os.environ.get("CHANNEL_ID")
 MAINTAINER_TOKEN = os.environ.get("MAINTAINER_TOKEN")
 MAINTAINER_CHATID = os.environ.get("MAINTAINER_CHATID")
 
-try:
+def emojify(tag, meal):
+  return "".join([tag]*3)+ meal + "".join([tag]*3)
 
-  fruits = ["watermelon", "grapes", "melon", "tangerine", "banana", "pineapple", "peach", "cherries", "strawberry"]
-  food = ["hamburger", "taco", "sushi", "bacon","hot_dog", "shallow_pan_of_food", "burrito","stuffed_flatbread", "pretzel","green_salad", "falafel","spaghetti", "tamale"]
+def get_heading(meal):
+  if "fisch" in meal.lower():
+    return emojify(":fish:", meal) 
+  elif "fleisch" in meal.lower(): 
+    return emojify(":shallow_pan_of_food:", meal) 
+  elif "vegetarisch" in meal.lower(): 
+    return emojify(":falafel:", meal) 
+  elif "vegan" in meal.lower():
+    return emojify(":broccoli:", meal) 
+  elif "pizza" in meal.lower():
+    return emojify(":pizza:", meal) 
+  elif "wok" in meal.lower(): 
+    return emojify(":curry_rice:", meal) 
+  elif "smoothie" in meal.lower(): 
+    return emojify(":tropical_drink:", meal) 
+  elif "salat" in meal.lower(): 
+    return emojify(":green_salad:", meal) 
+  elif "grill" in meal.lower(): 
+    return emojify(":fire:", meal)     #poultry_leg
+  elif "pasta" in meal.lower(): 
+    return emojify(":spaghetti:", meal)     
+  else:
+    return meal
 
-
-  def menue_mensa_am_park():
-    message = ""
-    response = requests.get('https://www.studentenwerk-leipzig.de/mensen-cafeterien/speiseplan?location=106')
-    soup = bs4.BeautifulSoup(response.text)
-    date = soup.find_all("option", {"selected": "selected"})[1].text
-    menuecard = soup.find_all("section", {"class": "meals"})[0]
-    meals = menuecard.find_all("div", {"class": "meals__summary"})
-    message += f'{"".join([f":{f}:"for f in random.sample(food, 8)])}\n'
-    message += f"<b>Mensa am Park\n{date}\n</b>"
-    message += f'{"".join([f":{f}:"for f in random.sample(food, 8)])}\n\n'
     
-    pizza = False
-    smoothie = False
-    fish = False 
+def get_soup(url):
+    response = requests.get(url)
+    soup = bs4.BeautifulSoup(response.text)
+    return soup
 
-    for meal in meals:
-      name = meal.find("h4", {"class": "meals__name"}).text
-      price = meal.find("p", {"class": "meals__price"}).text.replace("\n", "").replace(" ", "").replace("Preise:", "")
-      
-      if not pizza and "Pizza" in name:
-        message += ":pizza::pizza::pizza::pizza::pizza:\n"
-        pizza = True
-      if not smoothie and "Smoothie" in name:
-        message += f'{"".join([f":{fruit}:"for fruit in random.sample(fruits, 5)])}\n'
-        smoothie = True
-      if "Genießen Sie unsere frischen Smoothies!" not in name:
-        message += f'{name}\n{price}\n\n'
-      
-    return message
+def get_menu(soup):
+    date = soup.find_all("option", {"selected": "selected"})[1].text
+    menucard = [tag for tag in list(soup.find_all("section", {"class": "meals"})[0]) if tag != "\n"][1:]
+    meal = ""
+    menu = {}
+    for i in range(len(menucard)):
+        tag = menucard[i]
+        if isinstance(tag, Tag):
+            if "title-prim" in list(*tag.attrs.values()):
+                meal = tag.text
+                if meal not in menu:
+                    menu[meal] = {"subtitle": "", "meals":[]}
+            if "meals__subtitle" in list(*tag.attrs.values()):
+                menu[meal]["subtitle"] = tag.text
+            if "accordion" in list(*tag.attrs.values()):
+                items = tag.find_all("section")
+                for item in items: 
+                    name = item.find("h4", {"class": "meals__name"}).text
+                    
+                    price = item.find("p", {"class": "meals__price"}).text.replace("\n", "").replace(" ", "").replace("Preise:", "").replace("/", "   ")
+                    sides = item.find_all("li")
+                    sidedishes = ""
+                    if len(sides) > 0:
+                        sidedishes += "mit "
+                        for s in sides:
+                            sidedishes += s.text + "\n"
+                    menu[meal]["meals"] += [f'{name}\n{sidedishes}{price}\n\n']
+
+    return date, menu
 
 
 
-  msg = emoji.emojize(menue_mensa_am_park())
+def make_message(date, menu, mensa):
+  msg = ""
+  msg += f"<b>{mensa}\n{date}\n\n</b>"
+    
+  for key, value in menu.items():
+    msg += f"\n<b>{get_heading(key)}</b>\n"
+    if value["subtitle"] != "":
+      msg += f"{value['subtitle']}\n"
+    for meal in value["meals"]:
+      if "Genießen" not in meal:
+        msg += meal 
+    msg = msg.replace("&", "und")
+  return msg
+
+try:
+  soup = get_soup('https://www.studentenwerk-leipzig.de/mensen-cafeterien/speiseplan?location=106')
+  date, menu = get_menu(soup)
+  msg = emoji.emojize(make_message(date, menu, "Mensa am Park"))
   response = requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={CHANNEL_ID}&text={msg}&parse_mode=html")
 
 except Exception as e:
