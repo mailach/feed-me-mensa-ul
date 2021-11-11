@@ -43,5 +43,5 @@ Add execution everyday at 10.30 am.
 
 ## Possible Enhancements
 * Write tests ;)  
-* Mesa am Sportforum, Cafeteria etc  
+* Mensa am Sportforum, Cafeteria etc  
 * Add discord, slack, mattermost, signal etc.  
