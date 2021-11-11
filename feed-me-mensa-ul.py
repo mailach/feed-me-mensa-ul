@@ -125,23 +125,27 @@ def make_message(date, menu, mensa):
     msg = msg.replace("&", "und")
   return msg
 
-try:
-  # generate soup and extract menu
-  soup = get_soup('https://www.studentenwerk-leipzig.de/mensen-cafeterien/speiseplan?location=106')
-  date, menu = get_menu(soup)
-  # make message and emojize message
-  msg = emoji.emojize(make_message(date, menu, "Mensa am Park"))
-  
-  # trigger telegram bot api
-  response = requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={CHANNEL_ID}&text={msg}&parse_mode=html")
-  
-  # check if response is "ok", else raise exception and send response text
-  if response.status_code != 200:
-    raise Exception(f"Did not receive 200 from Telegram API.\n{response.text}")
+def main():
+  try:
+    # generate soup and extract menu
+    soup = get_soup('https://www.studentenwerk-leipzig.de/mensen-cafeterien/speiseplan?location=106')
+    date, menu = get_menu(soup)
+    # make message and emojize message
+    msg = emoji.emojize(make_message(date, menu, "Mensa am Park"))
+    
+    # trigger telegram bot api
+    response = requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={CHANNEL_ID}&text={msg}&parse_mode=html")
+    
+    # check if response is "ok", else raise exception and send response text
+    if response.status_code != 200:
+      raise Exception(f"Did not receive 200 from Telegram API.\n{response.text}")
 
-except Exception as e:
+  except Exception as e:
 
-  # if script fails, send message to maintainer chat
-  message = f"Feed Me Bot script failed on {MACHINE_NAME}.\nError Message:\n{str(e)}"
-  response = requests.get(f"https://api.telegram.org/bot{MAINTAINER_TOKEN}/sendMessage?chat_id={MAINTAINER_CHATID}&text={message}&parse_mode=html")
+    # if script fails, send message to maintainer chat
+    message = f"Feed Me Bot script failed on {MACHINE_NAME}.\nError Message:\n{str(e)}"
+    response = requests.get(f"https://api.telegram.org/bot{MAINTAINER_TOKEN}/sendMessage?chat_id={MAINTAINER_CHATID}&text={message}&parse_mode=html")
 
+
+if __name__ == "__main__":
+    main()
