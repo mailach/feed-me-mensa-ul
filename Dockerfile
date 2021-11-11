@@ -6,9 +6,7 @@ WORKDIR /usr/app/src
 #to COPY the remote file at working directory in container
 COPY feed-me-mensa-ul.py ./
 COPY requirements.txt ./
-COPY .env  ./
 
-RUN export $(cat .env | xargs)
 RUN pip install -r requirements.txt
 
 CMD [ "python", "./feed-me-mensa-ul.py"]
