@@ -11,7 +11,7 @@ MAINTAINER_CHATID = os.environ.get("MAINTAINER_CHATID")
 MACHINE_NAME = os.environ.get("MACHINE_NAME")
 
 def emojify(tag, meal):
-  """This function returns the meal wrapped in two emojis using the specified tag"""
+  """This function returns the meal wrapped in three emojis using the specified tag"""
   return "".join([tag]*3)+ meal + "".join([tag]*3)
 
 def get_heading(meal):
@@ -90,7 +90,7 @@ def get_menu(soup):
             # extract information name, price and sidedish for each meal in the accordion
               for item in items: 
                   name = item.find("h4", {"class": "meals__name"}).text
-                  price = clean_string(item.find("p", {"class": "meals__price"}).text, ["\n", " ", "Preise:"]).replace("/", " ")
+                  price = clean_string(item.find("p", {"class": "meals__price"}).text, ["\n", " ", "Preise:"]).replace("/", "   ")
                   
                   # find all sidedish information
                   sides = item.find_all("li")
