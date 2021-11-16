@@ -48,7 +48,7 @@ def get_heading(meal):
 def get_soup(url: str):
   """ Returns a Beautifulsoup object from a specified url."""
   response = requests.get(url)
-  soup = BeautifulSoup(response.text)
+  soup = BeautifulSoup(response.text, "html.parser")
   return soup
 
 def clean_string(string_to_clean, to_remove):
