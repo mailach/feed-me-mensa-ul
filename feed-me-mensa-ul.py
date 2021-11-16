@@ -1,7 +1,6 @@
 import requests
-import bs4
 import emoji
-from bs4 import  Tag
+from bs4 import  Tag, BeautifulSoup
 import os
 
 # get secrets from environment variables
@@ -39,7 +38,9 @@ def get_heading(meal):
   elif "pasta" in meal.lower(): 
     return emojify(":spaghetti:", meal)      
   elif "sättigung" in meal.lower(): 
-    return emojify(":french_fries:", meal)    
+    return emojify(":french_fries:", meal)      
+  elif "suppe" in meal.lower(): 
+    return emojify(":bowl_with_spoon:", meal)      
   else:
     return meal
 
@@ -47,7 +48,7 @@ def get_heading(meal):
 def get_soup(url: str):
   """ Returns a Beautifulsoup object from a specified url."""
   response = requests.get(url)
-  soup = bs4.BeautifulSoup(response.text)
+  soup = BeautifulSoup(response.text)
   return soup
 
 def clean_string(string_to_clean, to_remove):
