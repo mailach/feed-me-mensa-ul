@@ -7,7 +7,7 @@ on:
 jobs:
 
   build:
-    name: Build
+    name: Copy files and Build docker image
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -20,3 +20,13 @@ jobs:
         key: ${{ secrets.KEY }}
         source: "feed_me_mensa_ul.py, Dockerfile, requirements.txt"
         target: "feed-me-mensa-ul"
+    
+    - name: build docker image
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
+        script:  docker image build -t feed-me-mensa-ul:latest feed-me-mensa-ul/
+        
