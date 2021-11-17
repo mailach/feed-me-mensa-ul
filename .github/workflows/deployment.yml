@@ -1,5 +1,9 @@
 name: Automatic Deployment to Remote
-on: [push]
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
 jobs:
 
   build:
