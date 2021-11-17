@@ -57,6 +57,7 @@ def clean_string(string_to_clean, to_remove):
     string_to_clean = string_to_clean.replace(ch, "")
   return string_to_clean
 
+
 def get_menu(soup):
   """Takes a soup object and extracts menu from it. Returns a dictionary with dishtype as keys and corresponding dishes and prices."""
   
@@ -112,6 +113,8 @@ def make_message(date, menu, mensa):
   """ Generates the final message that is send to telegram bot."""
   msg = ""
   msg += f"<b>{mensa}\n{date}\n\n</b>"
+  if len(menu)==0:
+    msg += "Kein Menü verfügbar."
     
   for key, value in menu.items():
     msg += f"\n<b>{get_heading(key)}</b>\n"
