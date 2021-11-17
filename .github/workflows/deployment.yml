@@ -28,5 +28,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         port: ${{ secrets.PORT }}
         key: ${{ secrets.KEY }}
-        script:  docker image build -t feed-me-mensa-ul:latest feed-me-mensa-ul/
+        script:  docker image build -t feed-me-mensa-ul:latest feed-me-mensa-ul/  && docker container run --env-file ${{ secrets.TEST_ENV }} feed-me-mensa-ul:latest
+
         
