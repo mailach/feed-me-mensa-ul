@@ -9,4 +9,4 @@ COPY requirements.txt ./
 
 RUN pip install -r requirements.txt
 
-CMD [ "python", "./feed-me-mensa-ul.py"]
+CMD [ "python", "./feed_me_mensa_ul.py"]
