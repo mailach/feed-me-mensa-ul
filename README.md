@@ -1,6 +1,7 @@
 # Feed me Mensa UL  
+<img src="https://user-images.githubusercontent.com/42438033/141348424-46fed982-cbaf-461b-a406-7d34284fe821.jpg " width="200" />
 
-A quick-and-dirty script to scrape the daily menu of Leipzig University Mensa and send it to a telegram channel. The script is currently dockerized and running as a cronjob on a server, executed daily at 10.30 am. 
+A quick-and-dirty script to scrape the daily menu of Leipzig University Mensa and send it to a telegram channel. For food and cat lovers. The script is currently dockerized and running as a cronjob on a server, executed daily at 10.30 am. 
 
 Check out the telegram channel: <https://t.me/feed_me_mensa_ul>
 
