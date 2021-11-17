@@ -1,0 +1,18 @@
+name: Automatic Deployment to Remote
+on: [push]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: copy file via ssh key
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
+        source: "feed_me_mensa_ul.py, Dockerfile, requirements.txt"
+        target: "feed-me-mensa-ul"
