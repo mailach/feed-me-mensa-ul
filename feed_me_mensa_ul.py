@@ -6,7 +6,6 @@ import os
 # get secrets from environment variables
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHANNEL_ID = os.environ.get("CHANNEL_ID")
-MAINTAINER_TOKEN = os.environ.get("MAINTAINER_TOKEN")
 MAINTAINER_CHATID = os.environ.get("MAINTAINER_CHATID")
 MACHINE_NAME = os.environ.get("MACHINE_NAME")
 
@@ -149,7 +148,7 @@ def main():
 
     # if script fails, send message to maintainer chat
     message = f"Feed Me Bot script failed on {MACHINE_NAME}.\nError Message:\n{str(e)}"
-    response = requests.get(f"https://api.telegram.org/bot{MAINTAINER_TOKEN}/sendMessage?chat_id={MAINTAINER_CHATID}&text={message}&parse_mode=html")
+    response = requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={MAINTAINER_CHATID}&text={message}&parse_mode=html")
 
 
 if __name__ == "__main__":
