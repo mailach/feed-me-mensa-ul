@@ -7,12 +7,11 @@ Check out the telegram channel: <https://t.me/feed_me_mensa_ul>
 
 ## Add secrets to env file
 
-For security reasons secrets are secret *-*. For testing and developing add your own bot credentials. And put in root folder in .env file.
+For security reasons keep secrets secret. For testing and developing add your own bot credentials. And put in root folder in .env file.
 
 ```
 BOT_TOKEN=  
 CHANNEL_ID=  
-MAINTAINER_TOKEN=  
 MAINTAINER_CHATID=
 MACHINE_NAME=
 ```
@@ -24,22 +23,22 @@ If you have added secrets to .env file, you can build an run the docker containe
 
 ```
 docker image build -t feed-me-mensa-ul:latest . 
-docker container run --env-file ./.env feed-me-mensa-ul:latest
+docker container run --env-file /path/to/.env feed-me-mensa-ul:latest
 ```
 
 
 
 ## Setting up cronjob  
-
+The current cron workflow is unreliable and only running for test reasons.   
 Add new cronjob.
 
 ```
 crontab -e
 ```
 
-Add execution everyday at 10.30 am.  
+Add execution every weekday at 10.30 am.  
 ```
-30 10 * * * docker container run --env-file /path/to/.env feed-me-mensa-ul:latest
+30 10 * * 1-5 docker container run --env-file /path/to/.env feed-me-mensa-ul:latest
 ```
 
 ## Possible Enhancements

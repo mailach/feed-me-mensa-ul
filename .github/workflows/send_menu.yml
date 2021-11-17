@@ -1,7 +1,7 @@
 name: Send todays menu to Telegram 
 on: 
   schedule:
-  - cron: '44 * * * *'
+  - cron: '30 10 * * 1-5'
 jobs:
   build:
     name: Send todays menu to telegram channel
