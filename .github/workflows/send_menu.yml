@@ -1,7 +1,7 @@
-name: Automatic Deployment to Remote
-on:
+name: Send todays menu to Telegram 
+on: 
   schedule:
-    - cron: '39 16 * * 1-5'
+  - cron: '44 * * * *'
 jobs:
   build:
     name: Send todays menu to telegram channel
