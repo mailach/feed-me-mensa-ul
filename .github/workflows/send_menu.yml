@@ -1,0 +1,20 @@
+name: Automatic Deployment to Remote
+on:
+  schedule:
+    - cron: '39 16 * * 1-5'
+jobs:
+  build:
+    name: Send todays menu to telegram channel
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: execute script in docker
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
+        script: docker container run --env-file ${{ secrets.TEST_ENV }} feed-me-mensa-ul:latest
+
+        
