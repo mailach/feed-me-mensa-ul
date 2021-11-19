@@ -32,7 +32,7 @@ def create_heading(meal):
 
 def create_local_representation_of_website(url):
   """ Creates a local representation of the website as beautifulsoup object."""
-  html_page = requests.get(url)
+  html_page = requests.get(url).text
   soup = BeautifulSoup(html_page, "html.parser")
   return soup
 
