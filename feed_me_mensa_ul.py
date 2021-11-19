@@ -15,31 +15,31 @@ def emojify(tag, meal):
 
 def create_heading(meal):
   """This function returns a formatted heading with different emojis depending on content of meal"""
-  meal = meal.lower()
+  meal_lower = meal.lower()
 
-  if "fisch" in meal:
+  if "fisch" in meal_lower:
     return emojify(":fish:", meal) 
-  elif "fleisch" in meal: 
+  elif "fleisch" in meal_lower: 
     return emojify(":shallow_pan_of_food:", meal) 
-  elif "vegetarisch" in meal: 
+  elif "vegetarisch" in meal_lower: 
     return emojify(":falafel:", meal) 
-  elif "vegan" in meal:
+  elif "vegan" in meal_lower:
     return emojify(":broccoli:", meal) 
-  elif "pizza" in meal:
+  elif "pizza" in meal_lower:
     return emojify(":pizza:", meal) 
-  elif "wok" in meal: 
+  elif "wok" in meal_lower: 
     return emojify(":curry_rice:", meal) 
-  elif "smoothie" in meal: 
+  elif "smoothie" in meal_lower: 
     return emojify(":tropical_drink:", meal) 
-  elif "salat" in meal: 
+  elif "salat" in meal_lower: 
     return emojify(":green_salad:", meal) 
-  elif "grill" in meal: 
+  elif "grill" in meal_lower: 
     return emojify(":fire:", meal)    
-  elif "pasta" in meal: 
+  elif "pasta" in meal_lower: 
     return emojify(":spaghetti:", meal)      
-  elif "sättigung" in meal: 
+  elif "sättigung" in meal_lower: 
     return emojify(":french_fries:", meal)      
-  elif "suppe" in meal: 
+  elif "suppe" in meal_lower: 
     return emojify(":bowl_with_spoon:", meal)      
   else:
     return meal
