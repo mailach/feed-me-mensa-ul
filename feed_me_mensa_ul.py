@@ -53,7 +53,7 @@ def cook_soup(html_page):
   return BeautifulSoup(html_page, "html.parser")
 
 
-def creat_local_representation_of_website(url):
+def create_local_representation_of_website(url):
   """ Creates a local representation of the website."""
   html_page = download_website(url).text
   soup = cook_soup(html_page)
@@ -142,7 +142,7 @@ def make_message(date, menu, mensa):
 def main():
   try:
     # generate soup and extract menu
-    soup = get_soup('https://www.studentenwerk-leipzig.de/mensen-cafeterien/speiseplan?location=106')
+    soup = create_local_representation_of_website('https://www.studentenwerk-leipzig.de/mensen-cafeterien/speiseplan?location=106')
     date, menu = get_menu(soup)
     # make message and emojize message
     msg = emoji.emojize(make_message(date, menu, "Mensa am Park"))
