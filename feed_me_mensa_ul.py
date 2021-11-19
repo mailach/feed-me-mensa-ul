@@ -43,12 +43,22 @@ def get_heading(meal):
   else:
     return meal
 
+def download_website(url):
+  """ Downloads the website."""
+  return requests.get(url)
+  
     
-def get_soup(url: str):
-  """ Returns a Beautifulsoup object from a specified url."""
-  response = requests.get(url)
-  soup = BeautifulSoup(response.text, "html.parser")
+def cook_soup(html_page):
+  """ Returns a Beautifulsoup object from a html page."""
+  return BeautifulSoup(html_page, "html.parser")
+
+
+def creat_local_representation_of_website(url):
+  """ Creates a local representation of the website."""
+  html_page = download_website(url).text
+  soup = cook_soup(html_page)
   return soup
+
 
 def clean_string(string_to_clean, to_remove):
   """Takes a string and cleans it from a list of strings and returns cleaned strin. """
