@@ -15,34 +15,20 @@ def emojify(tag, meal):
 
 def create_heading(meal):
   """This function returns a formatted heading with different emojis depending on content of meal"""
+  
+  options = {"fisch": ":fish:", "fleisch": ":shallow_pan_of_food:", "vegetarisch": ":falafel:",
+             "vegan": ":broccoli:", "pizza": ":pizza:", "suppe": ":bowl_with_spoon:", 
+             "wok": ":curry_rice:", "smoothie":":tropical_drink:", "grill": ":fire:",
+             "pasta": ":spaghetti:", "salat":":green_salad:", "sättigung": ":french_fries:"}
+  
   meal_lower = meal.lower()
 
-  if "fisch" in meal_lower:
-    return emojify(":fish:", meal) 
-  elif "fleisch" in meal_lower: 
-    return emojify(":shallow_pan_of_food:", meal) 
-  elif "vegetarisch" in meal_lower: 
-    return emojify(":falafel:", meal) 
-  elif "vegan" in meal_lower:
-    return emojify(":broccoli:", meal) 
-  elif "pizza" in meal_lower:
-    return emojify(":pizza:", meal) 
-  elif "wok" in meal_lower: 
-    return emojify(":curry_rice:", meal) 
-  elif "smoothie" in meal_lower: 
-    return emojify(":tropical_drink:", meal) 
-  elif "salat" in meal_lower: 
-    return emojify(":green_salad:", meal) 
-  elif "grill" in meal_lower: 
-    return emojify(":fire:", meal)    
-  elif "pasta" in meal_lower: 
-    return emojify(":spaghetti:", meal)      
-  elif "sättigung" in meal_lower: 
-    return emojify(":french_fries:", meal)      
-  elif "suppe" in meal_lower: 
-    return emojify(":bowl_with_spoon:", meal)      
-  else:
-    return meal
+  for key, value in options.items():
+    if key in meal_lower:
+      return emojify(value, meal)
+
+  return meal
+
 
 def download_website(url):
   """ Downloads the website."""
