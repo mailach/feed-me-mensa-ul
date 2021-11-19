@@ -30,20 +30,10 @@ def create_heading(meal):
   return meal
 
 
-def download_website(url):
-  """ Downloads the website."""
-  return requests.get(url)
-  
-    
-def cook_soup(html_page):
-  """ Returns a Beautifulsoup object from a html page."""
-  return BeautifulSoup(html_page, "html.parser")
-
-
 def create_local_representation_of_website(url):
-  """ Creates a local representation of the website."""
-  html_page = download_website(url).text
-  soup = cook_soup(html_page)
+  """ Creates a local representation of the website as beautifulsoup object."""
+  html_page = requests.get(url)
+  soup = BeautifulSoup(html_page, "html.parser")
   return soup
 
 
