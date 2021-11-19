@@ -13,32 +13,33 @@ def emojify(tag, meal):
   """This function returns the meal wrapped in three emojis using the specified tag"""
   return "".join([tag]*3)+ meal + "".join([tag]*3)
 
-def get_heading(meal):
+def create_heading(meal):
   """This function returns a formatted heading with different emojis depending on content of meal"""
-  
-  if "fisch" in meal.lower():
+  meal = meal.lower()
+
+  if "fisch" in meal:
     return emojify(":fish:", meal) 
-  elif "fleisch" in meal.lower(): 
+  elif "fleisch" in meal: 
     return emojify(":shallow_pan_of_food:", meal) 
-  elif "vegetarisch" in meal.lower(): 
+  elif "vegetarisch" in meal: 
     return emojify(":falafel:", meal) 
-  elif "vegan" in meal.lower():
+  elif "vegan" in meal:
     return emojify(":broccoli:", meal) 
-  elif "pizza" in meal.lower():
+  elif "pizza" in meal:
     return emojify(":pizza:", meal) 
-  elif "wok" in meal.lower(): 
+  elif "wok" in meal: 
     return emojify(":curry_rice:", meal) 
-  elif "smoothie" in meal.lower(): 
+  elif "smoothie" in meal: 
     return emojify(":tropical_drink:", meal) 
-  elif "salat" in meal.lower(): 
+  elif "salat" in meal: 
     return emojify(":green_salad:", meal) 
-  elif "grill" in meal.lower(): 
+  elif "grill" in meal: 
     return emojify(":fire:", meal)    
-  elif "pasta" in meal.lower(): 
+  elif "pasta" in meal: 
     return emojify(":spaghetti:", meal)      
-  elif "sättigung" in meal.lower(): 
+  elif "sättigung" in meal: 
     return emojify(":french_fries:", meal)      
-  elif "suppe" in meal.lower(): 
+  elif "suppe" in meal: 
     return emojify(":bowl_with_spoon:", meal)      
   else:
     return meal
@@ -126,7 +127,7 @@ def make_message(date, menu, mensa):
     msg += "Kein Menü verfügbar."
     
   for key, value in menu.items():
-    msg += f"\n<b>{get_heading(key)}</b>\n"
+    msg += f"\n<b>{create_heading(key)}</b>\n"
     if value["subtitle"] != "":
       msg += f"{value['subtitle']}\n"
     for meal in value["meals"]:
