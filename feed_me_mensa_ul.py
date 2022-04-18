@@ -147,8 +147,8 @@ def main():
     feiertage = get_feiertage()
 
     for tag in feiertage:
-      if int(tag["month"]) == int(date.split(".")[1]):
-        if int(tag["day"]) == int(date.split(".")[0]):
+      if tag["month"] == date.split(".")[1]:
+        if tag["day"] == date.split(".")[0]:
           raise Exception("Heute ist Feiertag: " + tag['name'])
 
     # trigger telegram bot api
