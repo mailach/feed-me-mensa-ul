@@ -3,11 +3,31 @@ import emoji
 from bs4 import  Tag, BeautifulSoup
 import os
 
+
+
+
 # get secrets from environment variables
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHANNEL_ID = os.environ.get("CHANNEL_ID")
 MAINTAINER_CHATID = os.environ.get("MAINTAINER_CHATID")
 MACHINE_NAME = os.environ.get("MACHINE_NAME")
+
+
+def  get_feiertag(soup):
+  months = {"Januar": "01", "Feburar": "02", "März": "03", "April": "04", "Mai": "05", "Juni":"06", "Juli": "07", "August": "08", "September": "09", "Oktober": "10", "November": "11", "Dezember": "12"}
+  date = soup.findAll("div")[0].text.replace("\n", "").strip()
+  weekday = soup.findAll("div")[1].text.replace("\n", "").strip()
+  name = soup.findAll("div")[2].text.replace("\n", "").strip()
+  day = date.split()[0].replace(".", "")
+  month = [v for k,v in months.items() if k==date.split()[1]][0] 
+
+  return({"name": name, "day": day,  "month": month, "date": date, "weekday": weekday})
+
+def get_feiertage():
+  answer = requests.get("https://www.schulferien.org/deutschland/feiertage/sachsen/").text
+  soup = BeautifulSoup(answer).findAll("div", class_="contentbox")[0]
+  return([get_feiertag(s) for s in soup.findAll("tr", class_="row_panel")])
+
 
 def emojify(tag, meal):
   """This function returns the meal wrapped in three emojis using the specified tag"""
@@ -118,12 +138,19 @@ def make_message(date, menu, mensa):
 
 def main():
   try:
+    
     # generate soup and extract menu
     soup = create_local_representation_of_website('https://www.studentenwerk-leipzig.de/mensen-cafeterien/speiseplan?location=106')
     date, menu = get_menu(soup)
     # make message and emojize message
     msg = emoji.emojize(make_message(date, menu, "Mensa am Park"))
-    
+    feiertage = get_feiertage()
+
+    for tag in feiertage:
+      if int(tag["month"]) == int(date.split(".")[1]):
+        if int(tag["day"]) == int(date.split(".")[0]):
+          raise Exception("Heute ist Feiertag: " + tag['name'])
+
     # trigger telegram bot api
     response = requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={CHANNEL_ID}&text={msg}&parse_mode=html")
     
